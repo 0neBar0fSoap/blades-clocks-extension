@@ -58,7 +58,8 @@
   <path
      d="M12,12 L2,12 A10,10 0 0,1 12,2 Z"
      fill="#2a2a2a"
-     id="path4" />
+     id="path4"
+     style="fill:#2a2a2a;fill-opacity:0" />
   <!-- Outer ring -->
   <circle
      cx="12"
