@@ -1,0 +1,15 @@
+{
+  "name": "Blades Clocks",
+  "version": "1.0.0",
+  "manifest_version": 1,
+  "description": "Forged in the Dark progress clocks \u2014 place and track clocks directly in your scene.",
+  "author": "Custom",
+  "icon": "/icon.svg",
+  "action": {
+    "title": "Clocks",
+    "icon": "/icon.svg",
+    "popover": "/action.html",
+    "height": 540,
+    "width": 360
+  }
+}

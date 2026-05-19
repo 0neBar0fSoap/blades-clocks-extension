@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blades Clocks</title>
+  <style>
+    :root {
+      --bg: #0d0d14;
+      --panel: #141421;
+      --panel-2: #0f0f18;
+      --border: #2a2a3d;
+      --text: #e7dcc8;
+      --muted: #8f8576;
+      --accent: #c8a46e;
+      --accent-2: #8f6e45;
+      --danger: #c44c44;
+      --success: #4aa36c;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 14px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .tab {
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--muted);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: 1.8px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .tab.active {
+      color: var(--accent);
+      border-color: var(--accent-2);
+      background: #191210;
+    }
+
+    .panel {
+      display: none;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .panel.active { display: block; }
+
+    .section { margin-bottom: 12px; }
+    .section:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    input[type="text"], input[type="color"], select {
+      width: 100%;
+      background: #0b0b12;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      outline: none;
+    }
+
+    input[type="text"]::placeholder { color: #6f6678; }
+
+    .seg-row, .color-row, .button-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .seg-btn, .color-btn, .action-btn, .mini-btn {
+      border: 1px solid var(--border);
+      background: #10101a;
+      color: var(--text);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: transform 0.08s ease, border-color 0.08s ease, background 0.08s ease;
+    }
+
+    .seg-btn {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 7px 0;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .seg-btn.active, .color-btn.active {
+      border-color: var(--accent);
+      background: #241a10;
+      color: var(--accent);
+    }
+
+    .color-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      padding: 0;
+    }
+
+    .action-btn {
+      width: 100%;
+      padding: 10px 12px;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      font-size: 10px;
+      color: #f3dfbf;
+      border-color: var(--accent-2);
+      background: linear-gradient(180deg, #3a2414, #24160c);
+    }
+
+    .action-btn:hover,
+    .seg-btn:hover,
+    .color-btn:hover,
+    .mini-btn:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent);
+    }
+
+    .action-btn:disabled,
+    .mini-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .preview-wrap {
+      background: #0b0b12;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 132px;
+    }
+
+    #preview {
+      width: 112px;
+      height: 112px;
+      display: block;
+    }
+
+    .clock-card {
+      border: 1px solid var(--border);
+      background: #0b0b12;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .clock-title {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .clock-meta {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .mini-btn {
+      flex: 1 1 0;
+      padding: 9px 10px;
+      font-size: 12px;
+    }
+
+    .mini-btn.advance { color: var(--success); }
+    .mini-btn.retreat { color: #d2a86e; }
+    .mini-btn.reset { color: #d2c3aa; }
+    .mini-btn.delete { color: var(--danger); }
+
+    .status {
+      margin-top: 8px;
+      min-height: 18px;
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+      font-style: italic;
+    }
+
+    .status.success { color: var(--success); }
+    .status.error { color: var(--danger); }
+
+    .help {
+      color: var(--muted);
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h1>Progress Clocks</h1>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="create">Create</div>
+    <div class="tab" data-tab="edit">Edit Selected</div>
+  </div>
+
+  <div class="panel active" id="panel-create">
+    <div class="section">
+      <label for="clockLabel">Clock name</label>
+      <input id="clockLabel" type="text" maxlength="40" placeholder="Vault alarm, patrol clock…" />
+    </div>
+
+    <div class="section">
+      <label>Segments</label>
+      <div class="seg-row" id="segmentRow">
+        <button class="seg-btn" data-segments="4">4</button>
+        <button class="seg-btn active" data-segments="6">6</button>
+        <button class="seg-btn" data-segments="8">8</button>
+        <button class="seg-btn" data-segments="10">10</button>
+        <button class="seg-btn" data-segments="12">12</button>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px; margin-top:8px;">
+        <label style="margin:0; white-space:nowrap;">Custom</label>
+        <input id="customSegments" type="number" min="2" max="20" placeholder="e.g. 3"
+          style="width:100%; background:#0b0b12; color:var(--text); border:1px solid var(--border);
+                 border-radius:6px; padding:7px 10px; outline:none;" />
+      </div>
+    </div>
+
+    <div class="section">
+      <label>Color swatches</label>
+      <div class="color-row" id="colorRow"></div>
+    </div>
+
+    <div class="section">
+      <label for="customColor">Custom color</label>
+      <input id="customColor" type="color" value="#c8a46e" />
+    </div>
+
+    <div class="section">
+      <label>Size</label>
+      <select id="size">
+        <option value="96">Small</option>
+        <option value="132" selected>Medium</option>
+        <option value="168">Large</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <label>Preview</label>
+      <div class="preview-wrap">
+        <img id="preview" alt="Clock preview" />
+      </div>
+    </div>
+
+    <button class="action-btn" id="placeBtn">Place Clock in Scene</button>
+    <div class="status" id="createStatus"></div>
+  </div>
+
+  <div class="panel" id="panel-edit">
+    <div id="editContent">
+      <div class="help">
+        Select any part of a clock in the scene, then switch back here to advance, reset, or delete it.
+      </div>
+    </div>
+    <div class="status" id="editStatus"></div>
+  </div>
+
+  <script type="module" src="./action.js"></script>
+</body>
+</html>
